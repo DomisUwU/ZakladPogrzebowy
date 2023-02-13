@@ -1,0 +1,90 @@
+﻿@page
+@model ZakladPogrzebowy.Pages.AddZakopkeModel
+@{
+}
+<h1>Wybierz pochowek</h1>
+<br>
+<form method="post">
+    <div class="row m-2">
+        <label class="col-2" asp-for="@Model.MojZmarlak.FirstName"></label>
+        <input class="col-4" asp-for="@Model.MojZmarlak.FirstName" />
+        <span class="text-danger col-6" asp-validation-for="@Model.MojZmarlak.FirstName"></span>
+    </div>
+    <div class="row m-2">
+        <label class="col-2" asp-for="@Model.MojZmarlak.LastName"></label>
+        <input class="col-4" asp-for="@Model.MojZmarlak.LastName" />
+        <span class="text-danger col-6" asp-validation-for="@Model.MojZmarlak.LastName"></span>
+    </div>
+    <div class="row m-2">
+        <label class="col-2" asp-for="@Model.MojZmarlak.GraveNumber"></label>
+        <input class="col-4" asp-for="@Model.MojZmarlak.GraveNumber" />
+        <span class="text-danger col-6" asp-validation-for="@Model.MojZmarlak.GraveNumber"></span>
+    </div>
+    <div class="row m-2">
+        <label class="col-2" asp-for="@Model.MojZmarlak.DateOfTheFuneral"></label>
+        <input class="col-4" asp-for="@Model.MojZmarlak.DateOfTheFuneral" />
+        <span class="text-danger col-6" asp-validation-for="@Model.MojZmarlak.DateOfTheFuneral"></span>
+    </div>
+    <div class="row m-2">
+        <label class="col-2" asp-for="@Model.MojZmarlak.Coffin"></label>
+        <div class="col-6">
+            @foreach (string g in Model.Coffin)
+            {
+               <input  type="radio" value="@g" asp-for="@Model.MojZmarlak.Coffin">
+                @g <br />
+            }
+       </div>
+    </div>
+     <div class="row m-2">
+        <label class="col-2" asp-for="@Model.MojZmarlak.KindOfFuneral"></label>
+        <select asp-for="@Model.MojZmarlak.KindOfFuneral" class="col-4">
+            @foreach (var elem in Model.KindOf)
+            {
+            <option value="@elem">@elem</option>
+            }
+    </select>
+    </div>
+        <div class="row m-2">
+            <label class="col-2" asp-for="@Model.MojZmarlak.Bonusses"></label>
+            <div class="col-6">
+                @for (int i = 0; i < Model.MojZmarlak.Bonusses.Count; i++)
+                {
+                    <input type="checkbox" asp-for="@Model.MojZmarlak.Bonusses[i].IsChecked" />
+                    @Model.MojZmarlak.Bonusses[i].Bonus <br />
+                    <input type="hidden" asp-for="@Model.MojZmarlak.Bonusses[i].Bonus" />
+
+                }
+            </div>
+        </div>
+     <div class="row m-2">
+
+        <input type="submit" class="offset-2 col-6 btn btn-primary" value="Dodaj" />
+
+    </div>
+</form>
+@if (ViewData["post"] != null)
+{
+        <div>
+        Przyjęto nowego Zmarlaka: @Model.MojZmarlak.FirstName @Model.MojZmarlak.LastName<br> 
+        Numer grobu: @Model.MojZmarlak.GraveNumber<br> Data pogrzebu:  @Model.MojZmarlak.DateOfTheFuneral<br>
+        W trumnie: @Model.MojZmarlak.Coffin<br>
+        Rodzaj Pogrzebu: @Model.MojZmarlak.KindOfFuneral<br>
+        Bonusy na pogrzebie:
+        </div>
+    @if ((Model.MojZmarlak.Bonusses.Where(w => w.IsChecked)).ToList().Count > 0)
+    {
+        <ul>
+            @foreach (var h in Model.MojZmarlak.Bonusses)
+            {
+                if (h.IsChecked)
+                {
+                 <li>@h.Bonus</li>
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <div>Brak dodatków  ;'(</div>
+    }
+}
